@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="flex justify-between items-center mb-6">
+    <h2 class="text-3xl font-bold">Dashboard Admin</h2>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <div>
+        <h3 class="text-xl font-semibold mb-4">Tambah Unit Baru</h3>
+        <form action="{{ url_for('add_sound') }}" method="POST" class="bg-white p-6 rounded shadow mb-6">
+            <input type="text" name="nama_paket" placeholder="Nama Paket" required class="w-full border p-2 mb-2 rounded">
+            <div class="flex gap-2 mb-2">
+                <input type="number" name="daya_watt" placeholder="Watt" required class="w-1/2 border p-2 rounded">
+                <input type="number" name="harga_sewa" placeholder="Harga" required class="w-1/2 border p-2 rounded">
+            </div>
+            <textarea name="deskripsi" placeholder="Deskripsi singkat" class="w-full border p-2 mb-4 rounded"></textarea>
+            <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 w-full">Tambah Data</button>
+        </form>
+
+        <h3 class="text-xl font-semibold mb-4">List Sound System</h3>
+        <div class="bg-white rounded shadow overflow-hidden">
+            {% for sound in sounds %}
+            <div class="flex justify-between items-center border-b p-3">
+                <div>
+                    <div class="font-bold">{{ sound.nama_paket }}</div>
+                    <div class="text-sm text-gray-500">Rp {{ "{:,.0f}".format(sound.harga_sewa) }}</div>
+                </div>
+                <a href="{{ url_for('delete_sound', id=sound.id) }}" class="text-red-500 text-sm hover:underline" onclick="return confirm('Hapus data ini?')">Hapus</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div>
+        <h3 class="text-xl font-semibold mb-4">Daftar Booking Masuk</h3>
+        <div class="bg-white rounded shadow overflow-x-auto">
+            <table class="w-full text-left text-sm">
+                <thead class="bg-gray-200">
+                    <tr>
+                        <th class="p-3">User</th>
+                        <th class="p-3">Paket</th>
+                        <th class="p-3">Tanggal</th>
+                        <th class="p-3">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for book in bookings %}
+                    <tr class="border-b">
+                        <td class="p-3 font-medium">{{ book.username }}</td>
+                        <td class="p-3">{{ book.nama_paket }}</td>
+                        <td class="p-3">{{ book.tanggal_sewa }}</td>
+                        <td class="p-3">{{ book.status_booking }}</td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="4" class="p-4 text-center">Belum ada booking.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
