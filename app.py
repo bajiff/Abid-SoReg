@@ -155,6 +155,44 @@ def add_sound():
     flash('Paket sound berhasil ditambahkan.', 'success')
     return redirect(url_for('admin_dashboard'))
 
+# ROUTE EDIT
+@app.route('/admin/edit_sound/<int:id>', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def edit_sound(id):
+    conn = get_db_connection()
+    
+    # 1. Ambil data sound berdasarkan ID
+    sound = conn.execute('SELECT * FROM sound_systems WHERE id = ?', (id,)).fetchone()
+    
+    if not sound:
+        flash('Data sound tidak ditemukan!', 'error')
+        conn.close()
+        return redirect(url_for('admin_dashboard'))
+
+    # 2. Proses Update Data (POST)
+    if request.method == 'POST':
+        nama = request.form['nama_paket']
+        watt = request.form['daya_watt']
+        harga = request.form['harga_sewa']
+        status = request.form['status'] # Kita tambah fitur ubah status manual
+        desc = request.form['deskripsi']
+        
+        conn.execute('''
+            UPDATE sound_systems 
+            SET nama_paket = ?, daya_watt = ?, harga_sewa = ?, status = ?, deskripsi = ?
+            WHERE id = ?
+        ''', (nama, watt, harga, status, desc, id))
+        
+        conn.commit()
+        conn.close()
+        flash('Data sound berhasil diperbarui!', 'success')
+        return redirect(url_for('admin_dashboard'))
+
+    # 3. Tampilkan Form Edit (GET)
+    conn.close()
+    return render_template('edit_sound.html', sound=sound)
+
 @app.route('/admin/delete_sound/<int:id>')
 @login_required
 @admin_required

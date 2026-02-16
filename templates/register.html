@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md mt-10">
+    <div class="text-center mb-6">
+        <h2 class="text-2xl font-bold text-blue-900">Daftar Akun Baru</h2>
+        <p class="text-gray-500 text-sm">Bergabunglah dengan Abid SoReg</p>
+    </div>
+
+    <form method="POST" action="{{ url_for('register') }}">
+        <div class="mb-4">
+            <label class="block text-gray-700 font-medium mb-2">Username</label>
+            <input type="text" name="username" required class="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Pilih username unik">
+        </div>
+        
+        <div class="mb-6">
+            <label class="block text-gray-700 font-medium mb-2">Password</label>
+            <input type="password" name="password" required class="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Buat password aman">
+        </div>
+        
+        <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 rounded hover:bg-blue-700 transition duration-200">
+            Daftar Sekarang
+        </button>
+    </form>
+    
+    <div class="mt-6 text-center border-t pt-4">
+        <p class="text-sm text-gray-600">Sudah punya akun? 
+            <a href="{{ url_for('login') }}" class="text-blue-900 font-bold hover:underline">Login disini</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

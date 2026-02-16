@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-md mt-10">
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold text-blue-900">Edit Paket Sound</h2>
+        <a href="{{ url_for('admin_dashboard') }}" class="text-gray-500 hover:text-gray-700">Kembali</a>
+    </div>
+
+    <form method="POST">
+        <div class="mb-4">
+            <label class="block text-gray-700 font-medium mb-2">Nama Paket</label>
+            <input type="text" name="nama_paket" value="{{ sound.nama_paket }}" required 
+                   class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-500">
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 mb-4">
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Daya (Watt)</label>
+                <input type="number" name="daya_watt" value="{{ sound.daya_watt }}" required 
+                       class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Harga Sewa (Rp)</label>
+                <input type="number" name="harga_sewa" value="{{ sound.harga_sewa }}" required 
+                       class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-500">
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 font-medium mb-2">Status Ketersediaan</label>
+            <select name="status" class="w-full border border-gray-300 p-2 rounded bg-white focus:ring-2 focus:ring-blue-500">
+                <option value="tersedia" {% if sound.status == 'tersedia' %}selected{% endif %}>Tersedia</option>
+                <option value="disewa" {% if sound.status == 'disewa' %}selected{% endif %}>Sedang Disewa</option>
+                <option value="maintenance" {% if sound.status == 'maintenance' %}selected{% endif %}>Perbaikan/Maintenance</option>
+            </select>
+        </div>
+
+        <div class="mb-6">
+            <label class="block text-gray-700 font-medium mb-2">Deskripsi</label>
+            <textarea name="deskripsi" rows="4" required 
+                      class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-500">{{ sound.deskripsi }}</textarea>
+        </div>
+
+        <div class="flex gap-3">
+            <button type="submit" class="w-full bg-blue-900 text-white font-bold py-2 rounded hover:bg-blue-800 transition">
+                Simpan Perubahan
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
