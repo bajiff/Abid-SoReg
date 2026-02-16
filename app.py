@@ -204,5 +204,39 @@ def delete_sound(id):
     flash('Paket dihapus.', 'success')
     return redirect(url_for('admin_dashboard'))
 
+# ROUTE BOOKING
+@app.route('/admin/booking_action/<int:id>/<action>')
+@login_required
+@admin_required
+def booking_action(id, action):
+    conn = get_db_connection()
+    
+    # Cek dulu bookingnya ada atau tidak
+    booking = conn.execute('SELECT * FROM bookings WHERE id = ?', (id,)).fetchone()
+    if not booking:
+        conn.close()
+        flash('Booking tidak ditemukan.', 'error')
+        return redirect(url_for('admin_dashboard'))
+
+    # Logika Aksi
+    if action == 'approve':
+        conn.execute('UPDATE bookings SET status_booking = "disetujui" WHERE id = ?', (id,))
+        flash(f'Booking ID #{id} telah DISETUJUI.', 'success')
+        
+    elif action == 'reject':
+        conn.execute('UPDATE bookings SET status_booking = "ditolak" WHERE id = ?', (id,))
+        flash(f'Booking ID #{id} telah DITOLAK.', 'error') # Pakai kategori error biar merah alertnya
+        
+    elif action == 'delete':
+        conn.execute('DELETE FROM bookings WHERE id = ?', (id,))
+        flash(f'Data booking ID #{id} berhasil dihapus.', 'success')
+        
+    else:
+        flash('Aksi tidak dikenali.', 'error')
+
+    conn.commit()
+    conn.close()
+    return redirect(url_for('admin_dashboard'))
+
 if __name__ == '__main__':
     app.run(debug=True)
