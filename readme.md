@@ -50,14 +50,14 @@
 
 ### 💻 Cara Menjalankan di LocalhostIkuti langkah berikut untuk menjalankan aplikasi di komputer Anda:
 
-1. Clone RepositoryBashgit 
+1. Clone Repository 
 ``` text
 git clone https://github.com/username-anda/abid-soreg.git
 cd abid-soreg
 ```
 2. Buat Virtual Environment (Disarankan menggunakan Python 3.12)
+# Windows
 ``` bash
-Windows
 python -m venv venv
 venv\Scripts\activate
 ```
@@ -68,14 +68,13 @@ venv\Scripts\activate
 python3.12 -m venv venv
 source venv/bin/activate
 ```
-
+Install Dependencies
 ```bash
-Install DependenciesBashpip install flask werkzeug
+pip install flask werkzeug
 ```
-
-``` bash
 Setup Database Jalankan script seeder.py untuk membuat database dan mengisi data awal otomatis.
 
+``` bash
 python seeder.py
 ```
 
@@ -84,16 +83,14 @@ Output: ✅ SEEDING SELESAI!
 Database 'abid_soreg.db' siap digunakan.
 ```
 
-```bash
 Jalankan Aplikasi python app.py
-
-
+```bash
 Buka browser dan akses: http://127.0.0.1:5000
-
 ```
 
 
 🗄️ Skema Database
+
 a. Tabel users
 Menyimpan data otentikasi pengguna.
 
@@ -105,10 +102,9 @@ password,TEXT,Hashed Password (Security)
 role,TEXT,"Enum ('admin', 'user')"
 ```
 
-```text
 b. Tabel sound_systems
 Menyimpan inventaris paket sound system.
-
+```text
 Kolom,Tipe Data,Keterangan
 id,INTEGER,"Primary Key, Auto Increment"
 nama_paket,TEXT,Nama perangkat/paket
@@ -118,10 +114,9 @@ status,TEXT,Status ketersediaan
 deskripsi,TEXT,Detail spesifikasi
 ```
 
-```text
 c. Tabel bookings
 Tabel transaksi yang menghubungkan User dan Sound System.
-
+```text
 Kolom,Tipe Data,Keterangan
 id,INTEGER,"Primary Key, Auto Increment"
 user_id,INTEGER,Foreign Key -> users(id)
@@ -131,10 +126,9 @@ status_booking,TEXT,"Default 'pending', 'approved', 'rejected'"
 
 ```
 
-```text
 🔑 Akun Demo (Default Seeder)
 Gunakan akun berikut untuk pengujian aplikasi setelah menjalankan seeder.py
-
+```text
 Role,Username,Password
 Admin,admin,admin123
 User,mas_rusdi,rusdi123

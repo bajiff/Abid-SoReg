@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash, send_file
+from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from db_config import get_db_connection
 from functools import wraps
@@ -138,6 +139,22 @@ def admin_dashboard():
     conn.close()
     return render_template('admin_dashboard.html', sounds=sounds, bookings=bookings)
 
+# --- Fitur Backup Database ---
+@app.route('/admin/backup_db')
+@login_required
+@admin_required
+def backup_db():
+    try:
+        # Membuat nama file unik berdasarkan waktu saat ini
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        nama_file_backup = f"backup_soreg_{timestamp}.db"
+
+        # Mengirimkan file abid_soreg.db untuk didownload
+        return send_file("abid_soreg.db", as_attachment=True, download_name=nama_file_backup)
+    except Exception as e:
+        flash(f'Gagal melakukan backup database: {str(e)}', 'error')
+        return redirect(url_for('admin_dashboard'))
+    
 @app.route('/admin/add_sound', methods=['POST'])
 @login_required
 @admin_required
